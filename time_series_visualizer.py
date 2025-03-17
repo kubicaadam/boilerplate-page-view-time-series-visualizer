@@ -36,11 +36,12 @@ def draw_bar_plot():
     df_bar['year'] = [d.year for d in df_bar.date]
     df_bar['month'] = [d.strftime('%B') for d in df_bar.date]
     
-    dfg_bar = df_bar.groupby(['year', 'month']).sum('value').reset_index()
+    dfg_bar = df_bar.groupby(['year', 'month']).mean('value').reset_index()
 
     print(dfg_bar)
 
-    #dfg_bar["value"] = dfg_bar["value"].astype('Int64')
+    dfg_bar["value"] = dfg_bar["value"].astype('int')
+
     #print(dfg_bar)
 
     dfg_bar = dfg_bar.pivot(index='year', columns='month', values='value')
@@ -70,22 +71,6 @@ def draw_bar_plot():
     plt.xlabel("Years") 
     plt.ylabel("Average Page Views") 
     plt.legend(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'], loc='upper left') 
-
-
-    
-
-    # # Draw bar plot
-    # # plot data in grouped manner of bar type 
-    # plt.bar(x-0.2, y1, width, color='cyan') 
-    # plt.bar(x, y2, width, color='orange') 
-    # plt.bar(x+0.2, y3, width, color='green') 
-    # plt.xticks(x, ['Team A', 'Team B', 'Team C', 'Team D', 'Team E']) 
-    # plt.xlabel("Teams") 
-    # plt.ylabel("Scores") 
-    # plt.legend(["Round 1", "Round 2", "Round 3"]) 
-    # plt.show() 
-
-
     
 
     # Save image and return fig (don't change this part)
