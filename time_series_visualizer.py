@@ -11,6 +11,7 @@ df.set_index('date', inplace=True)
 # Clean data
 df = df.loc[(df['value'] >= df['value'].quantile(0.025)) & (df['value'] <= df['value'].quantile(0.975))]
 
+
 def draw_line_plot():
     # Draw line plot
 
@@ -30,13 +31,62 @@ def draw_line_plot():
 
 def draw_bar_plot():
     # Copy and modify data for monthly bar plot
-    df_bar = None
+    df_bar = df.copy()
+    df_bar.reset_index(inplace=True)
+    df_bar['year'] = [d.year for d in df_bar.date]
+    df_bar['month'] = [d.strftime('%B') for d in df_bar.date]
+    
+    dfg_bar = df_bar.groupby(['year', 'month']).sum('value').reset_index()
 
-    # Draw bar plot
+    print(dfg_bar)
+
+    #dfg_bar["value"] = dfg_bar["value"].astype('Int64')
+    #print(dfg_bar)
+
+    dfg_bar = dfg_bar.pivot(index='year', columns='month', values='value')
+
+    print(dfg_bar)
+    
+    width = 0.04
+
+    x = dfg_bar.index
+
+    fig = plt.figure(figsize=(15, 13))
+
+    plt.bar(x - 6 * width, dfg_bar['January'], width) 
+    plt.bar(x - 5 * width, dfg_bar['February'], width) 
+    plt.bar(x - 4 * width, dfg_bar['March'], width) 
+    plt.bar(x - 3 * width, dfg_bar['April'], width) 
+    plt.bar(x - 2 * width, dfg_bar['May'], width) 
+    plt.bar(x - 1 * width, dfg_bar['June'], width) 
+    plt.bar(x + 0 * width, dfg_bar['July'], width) 
+    plt.bar(x + 1 * width, dfg_bar['August'], width) 
+    plt.bar(x + 2 * width, dfg_bar['September'], width) 
+    plt.bar(x + 3 * width, dfg_bar['October'], width) 
+    plt.bar(x + 4 * width, dfg_bar['November'], width) 
+    plt.bar(x + 5 * width, dfg_bar['December'], width) 
+
+    plt.xticks(x, dfg_bar.index) 
+    plt.xlabel("Years") 
+    plt.ylabel("Average Page Views") 
+    plt.legend(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'], loc='upper left') 
 
 
+    
 
-    fig = plt.figure(figsize=(32, 10))
+    # # Draw bar plot
+    # # plot data in grouped manner of bar type 
+    # plt.bar(x-0.2, y1, width, color='cyan') 
+    # plt.bar(x, y2, width, color='orange') 
+    # plt.bar(x+0.2, y3, width, color='green') 
+    # plt.xticks(x, ['Team A', 'Team B', 'Team C', 'Team D', 'Team E']) 
+    # plt.xlabel("Teams") 
+    # plt.ylabel("Scores") 
+    # plt.legend(["Round 1", "Round 2", "Round 3"]) 
+    # plt.show() 
+
+
+    
 
     # Save image and return fig (don't change this part)
     fig.savefig('bar_plot.png')
@@ -58,3 +108,7 @@ def draw_box_plot():
     # Save image and return fig (don't change this part)
     fig.savefig('box_plot.png')
     return fig
+
+
+draw_line_plot()
+draw_bar_plot()
