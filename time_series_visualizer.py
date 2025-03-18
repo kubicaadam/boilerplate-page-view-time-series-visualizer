@@ -1,3 +1,4 @@
+import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
@@ -83,17 +84,38 @@ def draw_box_plot():
     df_box.reset_index(inplace=True)
     df_box['year'] = [d.year for d in df_box.date]
     df_box['month'] = [d.strftime('%b') for d in df_box.date]
+    df_box['month_nr'] = [d.strftime('%m') for d in df_box.date]
+
+    print(df_box)
+
+    np.float = float    
+    np.int = int   #module 'numpy' has no attribute 'int'
+    np.object = object    #module 'numpy' has no attribute 'object'
+    np.bool = bool    #module 'numpy' has no attribute 'bool'
 
     # Draw box plots (using Seaborn)
+    fig, ax = plt.subplots(1, 2, figsize=(32, 10))
 
+    box_plot_year = sns.boxplot(data=df_box, x="year", y="value", ax=ax[0])
+    ax[0].set_title('Year-wise Box Plot (Trend)', fontsize=20)
+    ax[0].set_xlabel('Year', fontsize=16)
+    ax[0].set_ylabel('Page Views', fontsize=16)
+    ax[0].set_xticklabels(ax[0].get_xticklabels(), fontsize=16)
+    ax[0].set_yticklabels(ax[0].get_yticklabels(), fontsize=16)
 
-
-    fig = plt.figure(figsize=(32, 10))
-
+    box_plot_month = sns.boxplot(data=df_box.sort_values(by=["month_nr"]), x="month", y="value", ax=ax[1])
+    ax[1].set_title('Month-wise Box Plot (Seasonality)', fontsize=20)
+    ax[1].set_xlabel('Month', fontsize=16)
+    ax[1].set_ylabel('Page Views', fontsize=16)
+    ax[1].set_xticklabels(ax[1].get_xticklabels(), fontsize=16)
+    ax[1].set_yticklabels(ax[1].get_yticklabels(), fontsize=16)
+    
+   
     # Save image and return fig (don't change this part)
     fig.savefig('box_plot.png')
     return fig
 
 
-draw_line_plot()
-draw_bar_plot()
+#draw_line_plot()
+#draw_bar_plot()
+#draw_box_plot()
