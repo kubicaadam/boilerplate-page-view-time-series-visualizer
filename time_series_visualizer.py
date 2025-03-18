@@ -39,16 +39,10 @@ def draw_bar_plot():
     
     dfg_bar = df_bar.groupby(['year', 'month']).mean('value').reset_index()
 
-    print(dfg_bar)
-
     dfg_bar["value"] = dfg_bar["value"].astype('int')
 
-    #print(dfg_bar)
-
     dfg_bar = dfg_bar.pivot(index='year', columns='month', values='value')
-
-    print(dfg_bar)
-    
+   
     width = 0.04
 
     x = dfg_bar.index
@@ -85,8 +79,6 @@ def draw_box_plot():
     df_box['year'] = [d.year for d in df_box.date]
     df_box['month'] = [d.strftime('%b') for d in df_box.date]
     df_box['month_nr'] = [d.strftime('%m') for d in df_box.date]
-
-    print(df_box)
 
     np.float = float    
     np.int = int   #module 'numpy' has no attribute 'int'
